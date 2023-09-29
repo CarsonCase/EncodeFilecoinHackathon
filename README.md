@@ -9,6 +9,8 @@ The project consists of the following parts:
 - DAO
 - Vote
 
+![diagram of protocol](./diagram.png)
+
 ## Deal Client
 A contract provided by the Filecoin tutorial as a way to submit DealRequests
 
@@ -17,3 +19,13 @@ The meat and potatoes. The DAO contract contains ERC-4626 logic, as well as host
 
 ## Vote
 An ERC-20 token mintable and burnable by the DAO
+
+## Donor flow
+- Donate 10 tokens to the DAO and receive 10 vote tokens
+- Vote 8 tokens on proposal 1 and 2 on proposal 2
+
+## Patron flow
+- Notice proposal 1 has 8 votes and 2 has 2 votes
+- Call fundProposal() and receive back 8 "DAO" tokens
+- Assuming there are 8 other DAO tokens in existence, this patron owns 50% of the vault
+- The patron can now collect 5 of the donated tokens or continue to hold and collect further donations proportional to their share

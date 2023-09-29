@@ -16,11 +16,12 @@ describe("DAO", function () {
     const Token = await ethers.getContractFactory("TestToken");
     const token = await Token.deploy();
 
-    
+    const DealClient = await ethers.getContractFactory("DealClient");
+    const dealClient = await DealClient.deploy();
 
     // Create DAO
     const _DAO = await ethers.getContractFactory("DAO");
-    const DAO = await _DAO.deploy(token);
+    const DAO = await _DAO.deploy(token, dealClient);
 
     return { signers, token, DAO };
   }
@@ -52,12 +53,28 @@ describe("DAO", function () {
 
     votesValid = voteBal.toString() == donateAmount;
 
-    // submit a proposal
-    const ProposalSubmission = {
-      x: proposalVal,
-    };
+    const extraParamsV1 = [
+      "https://data-depot.lighthouse.storage/api/download/download_car?fileId=862fb115-d24a-4ff1-a1c8-eadbbbfd19cf.car",
+      18445,
+      false, // taskArgs.skipIpniAnnounce,
+      false, // taskArgs.removeUnsealedCopy
+    ];
 
-    await DAO.connect(proposalSumbittor).submitProposal(ProposalSubmission, votesWithProposal);
+    const DealRequestStruct = [
+      , //cidHex
+      32768, //taskArgs.pieceSize,
+      false, //taskArgs.verifiedDeal,
+      "baga6ea4seaqkp2pjlh6avlvee6ib2maanav5sc35l5glf3zm6rd6hmfgcx5xeji", //taskArgs.label,
+      520000, // startEpoch
+      1555200, // endEpoch
+      0, // taskArgs.storagePricePerEpoch,
+      0, // taskArgs.providerCollateral,
+      0, // taskArgs.clientCollateral,
+      1, //taskArgs.extraParamsVersion,
+      extraParamsV1,
+    ];
+
+    await DAO.connect(proposalSumbittor).submitProposal(DealRequestStruct, votesWithProposal);
     const x = await DAO.proposals(1);
     proposalValid = proposalVal.toString() == x[0].toString();
 

@@ -43,7 +43,7 @@ struct ExtraParamsV1 {
 }
 
 interface IDealClient{
-    function makeDealProposal(
-        DealRequest memory deal
-    ) external returns (bytes32);
+  function makeDealProposal(
+    DealRequest calldata deal
+  ) external returns (bytes32);
 }

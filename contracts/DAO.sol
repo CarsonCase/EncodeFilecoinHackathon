@@ -5,7 +5,7 @@ import {ERC4626, ERC20} from "@openzeppelin/contracts/token/ERC20/extensions/ERC
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {IDAO} from "./IDAO.sol";
 import {Vote, IVote} from "./Vote.sol";
-import {IDealClient, DealRequest} from "./DealClient.sol";
+import {IDealClient, DealRequest} from "./IDealClient.sol";
 
 contract DAO is ERC4626, IDAO{
     IVote public immutable voteToken;
@@ -51,9 +51,11 @@ contract DAO is ERC4626, IDAO{
     function fundProposal(uint proposalId) external override{
         Proposal memory proposal = proposals[proposalId];
         delete proposals[proposalId];
-
+        
         // do the thing
-        dealClient.makeDealProposal(proposals[proposalId].dealRequest);
+        dealClient.makeDealProposal(proposal.dealRequest);
+
+        
         emit ProposalSubmitted(proposalId, msg.sender);
 
         // mint contributor the number of shares the proposal had
